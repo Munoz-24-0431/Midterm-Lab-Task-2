@@ -320,13 +320,33 @@
                     <li>Choose New Query → Open File → Text/CSV</li>
                     <li>Select the file and load it into Power Query Editor</li>
                 </ul>
+
+                <h3 class="step-title">1.2 Duplicate the Raw Data</h3>
+                <ul>
+                    <li>Right-click on the raw data query in the Queries pane</li>
+                    <li>Select Duplicate to create a copy of the original data for further processing</li>
+                </ul>
             </div>
         </section>
 
         <section class="content-section">
             <h2>Step 2 - Data Cleaning Tasks</h2>
             <div class="step-section">
-                <h3>Cleaning the Salary Estimate Column</h3>
+                <h3 class="step-title">2.1 Remove Characters After Parentheses</h3>
+                <ul>
+                    <li>In the Transform menu, select Extract → Text Before Delimiter</li>
+                    <li>Type ( as the delimiter and click OK to remove any characters after the parentheses in the Salary Estimate column</li>
+                </ul>
+
+                <h3 class="step-title">2.2 Create Min and Max Salary Columns</h3>
+                <ul>
+                    <li>Select the Salary Estimate column</li>
+                    <li>Go to the Add Column tab → Column from Examples → From Selection</li>
+                    <li>Type the first value (e.g., "101") for Min Sal and press Enter</li>
+                    <li>Repeat the process for Max Sal</li>
+                </ul>
+
+                <h3 class="step-title">2.3 Group Job Titles into Categories</h3>
                 <div class="code-block">
                     <p>if Text.Contains([Job Title], "Data Scientist") then "Data Scientist"</p>
                     <p>else if Text.Contains([Job Title], "Data Analyst") then "Data Analyst"</p>
@@ -334,6 +354,113 @@
                     <p>else if Text.Contains([Job Title], "Machine Learning") then "Machine Learning Engineer"</p>
                     <p>else "other"</p>
                 </div>
+
+                <h3 class="step-title">2.4 Fix Location Column</h3>
+                <div class="code-block">
+                    <p>if [Location] = "New Jersey" then ", NJ"</p>
+                    <p>else if [Location] = "Remote" then ", other"</p>
+                    <p>else if [Location] = "United States" then ", other"</p>
+                    <p>else if [Location] = "Texas" then ", TX"</p>
+                    <p>else if [Location] = "California" then ", CA"</p>
+                    <p>else [Location]</p>
+                </div>
+
+                <h3 class="step-title">2.5 Clean Company Size Column</h3>
+                <ul>
+                    <li>Follow the same process used for the Salary Estimate column</li>
+                    <li>Create MinCompanySize and MaxCompanySize columns</li>
+                </ul>
+
+                <h3 class="step-title">2.6 Handle Negative Values and Errors</h3>
+                <ul>
+                    <li>Filter out all -1 values in the Competitors column</li>
+                    <li>Filter out all 0 values in the Revenues column</li>
+                    <li>Filter out all -1 values in the Industry column</li>
+                </ul>
+
+                <h3 class="step-title">2.7 Remove Company Name Rates</h3>
+                <ul>
+                    <li>Clean the company names by removing any "Rates" after the company name</li>
+                    <li>Use Transform → Replace Values to remove unwanted text</li>
+                </ul>
+
+                <h3 class="step-title">2.8 Remove Column Descriptions</h3>
+                <ul>
+                    <li>Delete any columns that are irrelevant to the analysis</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Step 3 - Data Reshaping and Grouping</h2>
+            <div class="step-section">
+                <h3 class="step-title">3.1 Duplicate Raw Data for Aggregation</h3>
+                <ul>
+                    <li>Right-click on the Unclean DS Jobs query and select Duplicate</li>
+                </ul>
+
+                <h3 class="step-title">3.2 Grouping by Role Type</h3>
+                <ul>
+                    <li>Select Role Type, Min Sal, and Max Sal columns</li>
+                    <li>Change data types to Currency</li>
+                    <li>Multiply both columns by 1000</li>
+                    <li>Group by Role Type and calculate averages</li>
+                </ul>
+
+                <h3 class="step-title">3.3 Grouping by Company Size</h3>
+                <ul>
+                    <li>Create a reference query</li>
+                    <li>Select Size, Min Sal, and Max Sal columns</li>
+                    <li>Process data and calculate averages</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Step 4 - Merging with Other Data Sources</h2>
+            <div class="step-section">
+                <h3 class="step-title">4.1 Mapping States</h3>
+                <ul>
+                    <li>Create new query for state mapping file</li>
+                    <li>Merge State Abbreviations columns</li>
+                    <li>Rename and filter the results</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Step 5 - Final Grouping by State</h2>
+            <div class="step-section">
+                <h3 class="step-title">5.1 Group by State</h3>
+                <ul>
+                    <li>Create a Reference of the raw data</li>
+                    <li>Select State Full Name and salary columns</li>
+                    <li>Process and calculate state-wise averages</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Step 6 - Final Verification</h2>
+            <div class="step-section">
+                <h3 class="step-title">6.1 View Dependencies</h3>
+                <ul>
+                    <li>Check View → Dependencies</li>
+                    <li>Verify query relationships</li>
+                    <li>Ensure all connections are correct</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Step 7 - Final Queries and Export</h2>
+            <div class="step-section">
+                <h3 class="step-title">7.1 Ensure Final Queries</h3>
+                <ul>
+                    <li>Verify all queries are properly structured</li>
+                    <li>Check data types and calculations</li>
+                    <li>Confirm all transformations are complete</li>
+                </ul>
             </div>
         </section>
 
