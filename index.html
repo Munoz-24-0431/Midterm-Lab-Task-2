@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Midterm Lab Task 2 - Data Cleaning and Transformation</title>
+    <title>Finals Lab Task 2 - ER Model to Relational Tables</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -78,34 +78,7 @@
             animation: fadeInUp 1s ease forwards;
         }
 
-        .project-description {
-            line-height: 1.8;
-            margin-bottom: 2rem;
-            font-size: 1.1rem;
-        }
-
-        .step-section {
-            margin: 2rem 0;
-        }
-
-        .step-title {
-            color: var(--accent-purple);
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-        }
-
-        .step-title::before {
-            content: '';
-            width: 4px;
-            height: 24px;
-            background: var(--accent-purple);
-            margin-right: 1rem;
-            border-radius: 2px;
-        }
-
-        .code-block {
+        .sql-code {
             background: var(--code-bg);
             padding: 1.5rem;
             border-radius: 10px;
@@ -113,6 +86,17 @@
             font-family: 'Consolas', monospace;
             margin: 1rem 0;
             overflow-x: auto;
+            position: relative;
+        }
+
+        .sql-code::before {
+            content: 'SQL';
+            position: absolute;
+            top: 0.5rem;
+            right: 1rem;
+            color: var(--accent-purple);
+            font-size: 0.8rem;
+            opacity: 0.7;
         }
 
         .image-container {
@@ -156,28 +140,48 @@
             opacity: 1;
         }
 
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
+        .table-info {
+            background: rgba(45, 50, 82, 0.4);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            border-left: 4px solid var(--accent-blue);
         }
 
-        .star {
-            position: absolute;
-            background: var(--star-color);
-            border-radius: 50%;
-            animation: twinkle var(--duration) infinite;
+        .table-info h3 {
+            color: var(--accent-blue);
+            margin-bottom: 1rem;
         }
 
-        @keyframes twinkle {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.3; transform: scale(0.8); }
+        .relationship-arrow {
+            display: inline-block;
+            margin: 0 0.5rem;
+            color: var(--accent-purple);
+            animation: pulse 2s infinite;
         }
 
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 20px rgba(157, 78, 221, 0.5); }
+            50% { text-shadow: 0 0 40px rgba(72, 191, 227, 0.8); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Modal styles */
         .modal {
             display: none;
             position: fixed;
@@ -235,6 +239,37 @@
             transform: rotate(90deg);
         }
 
+        /* Add star bullet points */
+        ul {
+            list-style: none;
+            padding-left: 1.5rem;
+        }
+
+        ul li {
+            position: relative;
+            margin-bottom: 0.8rem;
+        }
+
+        ul li::before {
+            content: '★';
+            color: var(--accent-blue);
+            position: absolute;
+            left: -1.5rem;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
         .download-section {
             text-align: center;
             margin: 3rem 0;
@@ -265,26 +300,80 @@
             box-shadow: 0 5px 20px rgba(157, 78, 221, 0.4);
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .relationship-details {
+            margin-top: 1.5rem;
         }
 
-        @keyframes modalFadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+        .relationship-details h4 {
+            color: var(--accent-purple);
+            margin: 1.5rem 0 0.5rem 0;
+            font-size: 1.1rem;
+        }
+
+        .relationship-details ul {
+            list-style: none;
+            margin-left: 1rem;
+        }
+
+        .relationship-details li {
+            margin-bottom: 0.5rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .relationship-details li::before {
+            content: '★';
+            position: absolute;
+            left: 0;
+            color: var(--accent-blue);
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .project-description {
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .project-description strong {
+            color: var(--accent-blue);
+            font-weight: 600;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            background: var(--star-color);
+            border-radius: 50%;
+            animation: twinkle var(--duration) infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(0.8); }
+        }
+
+        /* Cosmic Dust */
+        .cosmic-dust {
+            position: fixed;
+            width: 2px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.5);
+            animation: dust 20s linear infinite;
+        }
+
+        @keyframes dust {
+            from { transform: translateY(-100vh) rotate(0deg); }
+            to { transform: translateY(100vh) rotate(360deg); }
         }
 
         @keyframes pulse-bg {
@@ -299,244 +388,117 @@
 
     <div class="container">
         <header class="header">
-            <h1 class="title">Midterm Lab Task 2</h1>
-            <p class="subtitle">Data Cleaning and Transformation using Power Query</p>
+            <h1 class="title">Finals Lab Task 2</h1>
+            <p class="subtitle">Transforming ER Model to Relational Tables</p>
         </header>
 
         <section class="content-section">
             <h2>Project Overview</h2>
             <p class="project-description">
-                This project focuses on data cleaning and transformation techniques using Power Query in Excel. The task involves working with a raw dataset related to job listings, including salary estimates, job roles, company sizes, and locations. Through various steps, we clean, reshape, and prepare the data for analysis, improving its structure and usability.
+                A step-by-step SQL project that transforms an ER model into relational tables. It includes the creation of <strong>student</strong>, <strong>assignment</strong>, and <strong>submission</strong> tables with proper primary keys, foreign keys, and relationships. The submission table tracks multiple versions, modeling a many-to-many relationship between students and assignments.
             </p>
-        </section>
-
-        <section class="content-section">
-            <h2>Step 1 - Data Loading and Duplication</h2>
-            <div class="step-section">
-                <h3 class="step-title">1.1 Load the Dataset</h3>
-                <ul>
-                    <li>Download the Uncleaned_DS_jobs.csv dataset</li>
-                    <li>Open Excel and go to the Data tab</li>
-                    <li>Choose New Query → Open File → Text/CSV</li>
-                    <li>Select the file and load it into Power Query Editor</li>
-                </ul>
-
-                <h3 class="step-title">1.2 Duplicate the Raw Data</h3>
-                <ul>
-                    <li>Right-click on the raw data query in the Queries pane</li>
-                    <li>Select Duplicate to create a copy of the original data for further processing</li>
-                </ul>
-            </div>
-        </section>
-
-        <section class="content-section">
-            <h2>Step 2 - Data Cleaning Tasks</h2>
-            <div class="step-section">
-                <h3 class="step-title">2.1 Remove Characters After Parentheses</h3>
-                <ul>
-                    <li>In the Transform menu, select Extract → Text Before Delimiter</li>
-                    <li>Type ( as the delimiter and click OK to remove any characters after the parentheses in the Salary Estimate column</li>
-                </ul>
-
-                <h3 class="step-title">2.2 Create Min and Max Salary Columns</h3>
-                <ul>
-                    <li>Select the Salary Estimate column</li>
-                    <li>Go to the Add Column tab → Column from Examples → From Selection</li>
-                    <li>Type the first value (e.g., "101") for Min Sal and press Enter</li>
-                    <li>Repeat the process for Max Sal</li>
-                </ul>
-
-                <h3 class="step-title">2.3 Group Job Titles into Categories</h3>
-                <div class="code-block">
-                    <p>if Text.Contains([Job Title], "Data Scientist") then "Data Scientist"</p>
-                    <p>else if Text.Contains([Job Title], "Data Analyst") then "Data Analyst"</p>
-                    <p>else if Text.Contains([Job Title], "Data Engineer") then "Data Engineer"</p>
-                    <p>else if Text.Contains([Job Title], "Machine Learning") then "Machine Learning Engineer"</p>
-                    <p>else "other"</p>
-                </div>
-
-                <h3 class="step-title">2.4 Fix Location Column</h3>
-                <div class="code-block">
-                    <p>if [Location] = "New Jersey" then ", NJ"</p>
-                    <p>else if [Location] = "Remote" then ", other"</p>
-                    <p>else if [Location] = "United States" then ", other"</p>
-                    <p>else if [Location] = "Texas" then ", TX"</p>
-                    <p>else if [Location] = "California" then ", CA"</p>
-                    <p>else [Location]</p>
-                </div>
-
-                <h3 class="step-title">2.5 Clean Company Size Column</h3>
-                <ul>
-                    <li>Follow the same process used for the Salary Estimate column</li>
-                    <li>Create MinCompanySize and MaxCompanySize columns</li>
-                </ul>
-
-                <h3 class="step-title">2.6 Handle Negative Values and Errors</h3>
-                <ul>
-                    <li>Filter out all -1 values in the Competitors column</li>
-                    <li>Filter out all 0 values in the Revenues column</li>
-                    <li>Filter out all -1 values in the Industry column</li>
-                </ul>
-
-                <h3 class="step-title">2.7 Remove Company Name Rates</h3>
-                <ul>
-                    <li>Clean the company names by removing any "Rates" after the company name</li>
-                    <li>Use Transform → Replace Values to remove unwanted text</li>
-                </ul>
-
-                <h3 class="step-title">2.8 Remove Column Descriptions</h3>
-                <ul>
-                    <li>Delete any columns that are irrelevant to the analysis</li>
-                </ul>
-            </div>
-        </section>
-
-        <section class="content-section">
-            <h2>Step 3 - Data Reshaping and Grouping</h2>
-            <div class="step-section">
-                <h3 class="step-title">3.1 Duplicate Raw Data for Aggregation</h3>
-                <ul>
-                    <li>Right-click on the Unclean DS Jobs query and select Duplicate</li>
-                </ul>
-
-                <h3 class="step-title">3.2 Grouping by Role Type</h3>
-                <ul>
-                    <li>Select Role Type, Min Sal, and Max Sal columns</li>
-                    <li>Change data types to Currency</li>
-                    <li>Multiply both columns by 1000</li>
-                    <li>Group by Role Type and calculate averages</li>
-                </ul>
-
-                <h3 class="step-title">3.3 Grouping by Company Size</h3>
-                <ul>
-                    <li>Create a reference query</li>
-                    <li>Select Size, Min Sal, and Max Sal columns</li>
-                    <li>Process data and calculate averages</li>
-                </ul>
-            </div>
-        </section>
-
-        <section class="content-section">
-            <h2>Step 4 - Merging with Other Data Sources</h2>
-            <div class="step-section">
-                <h3 class="step-title">4.1 Mapping States</h3>
-                <ul>
-                    <li>Create new query for state mapping file</li>
-                    <li>Merge State Abbreviations columns</li>
-                    <li>Rename and filter the results</li>
-                </ul>
-            </div>
-        </section>
-
-        <section class="content-section">
-            <h2>Step 5 - Final Grouping by State</h2>
-            <div class="step-section">
-                <h3 class="step-title">5.1 Group by State</h3>
-                <ul>
-                    <li>Create a Reference of the raw data</li>
-                    <li>Select State Full Name and salary columns</li>
-                    <li>Process and calculate state-wise averages</li>
-                </ul>
-            </div>
-        </section>
-
-        <section class="content-section">
-            <h2>Step 6 - Final Verification</h2>
-            <div class="step-section">
-                <h3 class="step-title">6.1 View Dependencies</h3>
-                <ul>
-                    <li>Check View → Dependencies</li>
-                    <li>Verify query relationships</li>
-                    <li>Ensure all connections are correct</li>
-                </ul>
-            </div>
-        </section>
-
-        <section class="content-section">
-            <h2>Step 7 - Final Queries and Export</h2>
-            <div class="step-section">
-                <h3 class="step-title">7.1 Ensure Final Queries</h3>
-                <ul>
-                    <li>Verify all queries are properly structured</li>
-                    <li>Check data types and calculations</li>
-                    <li>Confirm all transformations are complete</li>
-                </ul>
-            </div>
-        </section>
-
-        <section class="content-section">
-            <h2>Before Data Cleaning</h2>
-            <div class="image-container" data-fullscreen>
-                <img src="https://github.com/user-attachments/assets/8054f4f6-20b2-4836-91b4-26d078980045" alt="Before Data Cleaning">
-                <div class="image-overlay"></div>
-            </div>
-        </section>
-
-        <section class="content-section">
-            <h2>After Data Cleaning</h2>
-            <div class="image-container" data-fullscreen>
-                <img src="https://github.com/user-attachments/assets/de88530f-2ea8-49b0-ad71-1de65967a8e9" alt="After Data Cleaning">
-                <div class="image-overlay"></div>
-            </div>
-        </section>
-
-        <section class="content-section">
-            <h2>Final Queries</h2>
             
-            <div class="step-section">
-                <h3>Salary by Role Type</h3>
+            <div class="table-info">
+                <h3>Table Relationships</h3>
+                <div class="relationship-details">
+                    <h4>1. student table</h4>
+                    <ul>
+                        <li>Primary Key: username</li>
+                        <li>Relationships:</li>
+                        <li>One-to-Many with submission: One student (username) can have many submissions.</li>
+                    </ul>
+
+                    <h4>2. assignment table</h4>
+                    <ul>
+                        <li>Primary Key: shortname</li>
+                        <li>Relationships:</li>
+                        <li>One-to-Many with submission: One assignment (shortname) can have many submissions.</li>
+                    </ul>
+
+                    <h4>3. submission table</h4>
+                    <ul>
+                        <li>Composite Primary Key: (username, shortname, version)</li>
+                        <li>Relationships:</li>
+                        <li>Many-to-One with student: Each submission belongs to one student.</li>
+                        <li>Many-to-One with assignment: Each submission is for one assignment.</li>
+                        <li>This models a Many-to-Many relationship between students and assignments, with version tracking multiple submissions.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>Step by Step Process</h2>
+            <div class="table-info">
+                <h3>1. Create the student table</h3>
+                <ul>
+                    <li>Define username as a VARCHAR(50)</li>
+                    <li>Set username as the Primary Key</li>
+                </ul>
+                <div class="sql-code">
+                    <img src="https://github.com/user-attachments/assets/0ce8dffa-989c-4424-949d-665cb4f00e15" alt="Student Table Query">
+                </div>
                 <div class="image-container" data-fullscreen>
-                    <img src="https://github.com/user-attachments/assets/ef8dbfc2-54e6-4f92-9f60-05e2ee31459b" alt="Salary by Role Type">
+                    <img src="https://github.com/user-attachments/assets/7ba23ca6-88e8-4de0-9e3b-c8b265f58300" alt="Student Table Structure">
                     <div class="image-overlay"></div>
                 </div>
             </div>
 
-            <div class="step-section">
-                <h3>Salary by Size</h3>
+            <div class="table-info">
+                <h3>2. Create the assignment table</h3>
+                <ul>
+                    <li>Define shortname as a VARCHAR(50) and set it as the Primary Key</li>
+                    <li>Define due_date as a DATE NOT NULL</li>
+                    <li>Define url as a VARCHAR(255), which can be null</li>
+                </ul>
+                <div class="sql-code">
+                    <img src="https://github.com/user-attachments/assets/5893a6fc-d642-4af6-a096-7efa86581baa" alt="Assignment Table Query">
+                </div>
                 <div class="image-container" data-fullscreen>
-                    <img src="https://github.com/user-attachments/assets/3bb6ee29-9cd4-4c55-905e-433cfd5b8d2d" alt="Salary by Size">
+                    <img src="https://github.com/user-attachments/assets/f0e0a2a6-344f-407f-862f-931c1e0f4da1" alt="Assignment Table Structure">
                     <div class="image-overlay"></div>
                 </div>
             </div>
 
-            <div class="step-section">
-                <h3>State</h3>
+            <div class="table-info">
+                <h3>3. Create the submission table</h3>
+                <ul>
+                    <li>Define username and shortname both as VARCHAR(50)</li>
+                    <li>Define version as an INT</li>
+                    <li>Define submit_date as a DATE NOT NULL</li>
+                    <li>Define data as TEXT</li>
+                    <li>Set a composite primary key of (username, shortname, version)</li>
+                    <li>Add foreign keys referencing the student and assignment tables</li>
+                </ul>
+                <div class="sql-code">
+                    <img src="https://github.com/user-attachments/assets/ebdbe876-e568-4235-a939-03369a95250c" alt="Submission Table Query">
+                </div>
                 <div class="image-container" data-fullscreen>
-                    <img src="https://github.com/user-attachments/assets/13908e99-6588-483f-8643-1a02af873648" alt="State">
+                    <img src="https://github.com/user-attachments/assets/21702915-e26d-4c8a-9b81-cc6d5bb385c5" alt="Submission Table Structure">
                     <div class="image-overlay"></div>
                 </div>
             </div>
+        </section>
 
-            <div class="step-section">
-                <h3>Salary by State</h3>
-                <div class="image-container" data-fullscreen>
-                    <img src="https://github.com/user-attachments/assets/68139da5-18b3-4f90-8b07-da288ea5f51b" alt="Salary by State">
-                    <div class="image-overlay"></div>
-                </div>
+        <section class="content-section">
+            <h2>Entity Relationship Diagrams</h2>
+            <div class="image-container" data-fullscreen>
+                <h3>EER Diagram</h3>
+                <img src="https://github.com/user-attachments/assets/c0c40b37-ed6a-461f-94d4-53117141d43f" alt="EER Diagram">
+                <div class="image-overlay"></div>
             </div>
-
-            <div class="step-section">
-                <h3>Data Query Structure</h3>
-                <div class="image-container" data-fullscreen>
-                    <img src="https://github.com/user-attachments/assets/2b7c2a74-7d8d-4dc9-b13f-95e8169ce62a" alt="Data Query Structure">
-                    <div class="image-overlay"></div>
-                </div>
-            </div>
-
-            <div class="step-section">
-                <h3>Advanced Editor</h3>
-                <div class="image-container" data-fullscreen>
-                    <img src="https://github.com/user-attachments/assets/221b3b40-54e5-4737-829a-0578e304adfc" alt="Advanced Editor">
-                    <div class="image-overlay"></div>
-                </div>
+            <div class="image-container" data-fullscreen>
+                <h3>The Basis for the Creation of the Relational Tables</h3>
+                <img src="https://github.com/user-attachments/assets/ea53264c-e53e-4698-a3a3-4baa40521064" alt="Basis ERD">
+                <div class="image-overlay"></div>
             </div>
         </section>
 
         <section class="download-section">
             <h2>Download Project File</h2>
-            <a href="https://github.com/user-attachments/files/19143859/Midterm.Lab.Task.2.Munoz.xlsx" class="download-btn" download>
-                <i class="fas fa-file-excel"></i>
-                <span class="text">Click here to download the Excel file</span>
+            <a href="https://github.com/user-attachments/files/19718896/LAB.TASK.2.docx" class="download-btn" download>
+                <i class="fas fa-file-word"></i>
+                <span class="text">Click here to download the Lab Task 2 file</span>
             </a>
         </section>
     </div>
@@ -567,12 +529,17 @@
                 star.style.setProperty('--duration', `${Math.random() * 3 + 1}s`);
                 starsContainer.appendChild(star);
             }
-        }
 
-        // Initialize
-        window.addEventListener('load', () => {
-            createStars();
-        });
+            // Add cosmic dust
+            for (let i = 0; i < 50; i++) {
+                const dust = document.createElement('div');
+                dust.className = 'cosmic-dust';
+                dust.style.left = `${Math.random() * 100}%`;
+                dust.style.animationDelay = `${Math.random() * 20}s`;
+                dust.style.opacity = Math.random();
+                document.body.appendChild(dust);
+            }
+        }
 
         // Fullscreen Image Modal
         const modal = document.querySelector('.modal');
@@ -599,6 +566,11 @@
                 modal.classList.remove('active');
                 document.body.style.overflow = '';
             }
+        });
+
+        // Initialize
+        window.addEventListener('load', () => {
+            createStars();
         });
 
         // Intersection Observer for animations
